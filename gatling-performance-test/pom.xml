@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>gatling-performance-test</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>gatling-performance-test</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+    <gatling.version>3.10.3</gatling.version>
+    <gatling-maven-plugin.version>4.8.1</gatling-maven-plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Optionally: parameterized tests support -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.gatling/gatling-core-java -->
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-core-java</artifactId>
+      <version>3.13.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.gatling/gatling-http -->
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-http</artifactId>
+      <version>3.13.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.gatling/gatling-core -->
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-core</artifactId>
+      <version>3.13.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.gatling/gatling-http-java -->
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-http-java</artifactId>
+      <version>3.13.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.36</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- SLF4J Logging -->
+<!--    <dependency>-->
+<!--      <groupId>org.slf4j</groupId>-->
+<!--      <artifactId>slf4j-simple</artifactId>-->
+<!--      <version>2.0.9</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>io.gatling.highcharts</groupId>
+      <artifactId>gatling-charts-highcharts</artifactId>
+      <version>3.13.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.10.2</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.12.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <artifactId>ojdbc8</artifactId>
+      <version>19.19.0.0</version> <!-- Use the version compatible with your Oracle DB -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <compilerArgs>
+            <arg>--add-opens</arg>
+            <arg>java.base/java.lang=ALL-UNNAMED</arg>
+            <arg>--add-opens</arg>
+            <arg>java.base/java.time=ALL-UNNAMED</arg>
+            <arg>--add-opens</arg>
+            <arg>java.base/java.util=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-maven-plugin</artifactId>
+        <version>${gatling-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>gatling-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <runMultipleSimulations>true</runMultipleSimulations>
+          <includes>
+            <include>simulations.*</include>
+          </includes>
+          <jvmArgs>
+            <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
+            <jvmArg>--add-opens=java.base/java.time=ALL-UNNAMED</jvmArg>
+            <jvmArg>--add-opens=java.base/java.util=ALL-UNNAMED</jvmArg>
+          </jvmArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
